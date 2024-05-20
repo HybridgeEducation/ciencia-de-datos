@@ -15,10 +15,10 @@ meses['numero_mes'] = meses.index + 1
 datos_long['mes'] = datos_long['nombre_mes'].map(meses.set_index('nombre')['numero_mes'])
 
 # Filtrar filas con frecuencia NA
-datos_tidy = datos_long.dropna(subset=['frecuencia'])
+datos_limpios = datos_long.dropna(subset=['frecuencia'])
 
 # Renombrar columnas
-datos_tidy = datos_tidy.rename(columns={
+datos_limpios = datos_limpios.rename(columns={
     'Año': 'anio',
     'Clave_Ent': 'clave_entidad',
     'Entidad': 'entidad',
@@ -29,7 +29,7 @@ datos_tidy = datos_tidy.rename(columns={
 })
 
 # Reordenar columnas
-datos_tidy = datos_tidy[['anio', 'mes', 'clave_entidad', 'entidad', 'clave_municipio', 'municipio', 'tipo_delito', 'subtipo_delito', 'frecuencia']]
+datos_limpios = datos_limpios[['anio', 'mes', 'clave_entidad', 'entidad', 'clave_municipio', 'municipio', 'tipo_delito', 'subtipo_delito', 'frecuencia']]
 
 # Guardar archivo
-datos_tidy.to_csv('../data/delitos.csv', encoding='utf-8', index=False)
+datos_limpios.to_csv('../data/delitos.csv', encoding='utf-8', index=False)
