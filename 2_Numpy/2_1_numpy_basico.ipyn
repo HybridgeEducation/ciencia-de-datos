@@ -1,0 +1,1291 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Numpy\n",
+    "\n",
+    "¿Cuál es el hype de Numpy?\n",
+    "\n",
+    "Hemos mencionado que es una paquetería utilizada ampliamente en la industria, pero ¿qué la hace tan especial?\n",
+    "\n",
+    "Comencemos explorando el objeto principal de Numpy: el `ndarray`.\n",
+    "\n",
+    "## `ndarray`\n",
+    "**Un ndarray (N-dimensional array) es la estructura de datos principal de NumPy que permite almacenar y manipular arrays (arreglos) multidimensionales de forma eficiente. Proporciona operaciones rápidas y flexibles para realizar cálculos numéricos y transformaciones en grandes conjuntos de datos.**\n",
+    "\n",
+    "En un ndarray podemos almacenar elementos de un mismo tipo de dato. Aquí uno podría preguntarse\n",
+    "\n",
+    "**¿cuál es la ventaja o el beneficio de usar un ndarray de Numpy sobre una lista ordinaria de Python?**\n",
+    "\n",
+    "Numpy tiene ventajas significativas sobre listas ordinarias, descubrámoslas con ejemplos prácticos\n",
+    "\n",
+    "---\n",
+    "\n",
+    "## Crear un arreglo de Numpy\n",
+    "Hay más de una forma (como es costumbre en Python) para crear un array. La más común es pasarle una lista a la función `np.array`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Importamos numpy como np (SIEMPRE)\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "lista = [0,1,2,3,4]\n",
+    "array_1d = np.array(lista)\n",
+    "\n",
+    "#Checamos el tipo de dato de array_id\n",
+    "type(array_1d)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "type(1.2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#contenido del array\n",
+    "array_1d"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Diferencia entre ndarray y lista"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "La diferencia principal entre un `array` y una `list` es que los `arrays` están diseñados para procesar operaciones vectorizadas, mientras que una lista no tiene estas capacidades.\n",
+    "\n",
+    "Sea $\\vec{x}$ un vector tal que $\\vec{x} = (0 , 1, 2, 3, 4)$\n",
+    "\n",
+    "$$\\vec{x} + a = (0 + a, 1 + a, 2 + a, 3 + a, 4 + a)$$\n",
+    "\n",
+    "Entonces, si $a = 2$\n",
+    "$$ \\vec{x} + 2 = (0 +2, 1 + 2, 2 + 2, 3 + 2, 4 + 2) $$\n",
+    "$$ \\vec{x} + 2 = (2, 3, 4, 5, 6) $$\n",
+    "\n",
+    "Esto significa que si aplicamos una función a un `array` entonces la función se va a aplicar a **cada elemento del array**\n",
+    "\n",
+    "Veamos un ejemplo:\n",
+    "\n",
+    "Si quisieramos sumar 2 a cada elemento de la `lista`, intuitivamente podríamos intentar:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "lista"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "lista + 2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Como podemos ver, no es posible hacer esto con listas. Probemos ahora con `array_1d`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "array_1d + 2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Otro ejemplo: Multiplicación de matrices\n",
+    "\n",
+    "Veamos una multiplicación de matrices con Numpy.\n",
+    "\n",
+    "$A=\\begin{bmatrix}\n",
+    "1 & 2 & 3 \\\\\n",
+    "4 & 5 & 6\n",
+    "\\end{bmatrix}$ , $B=\\begin{bmatrix}\n",
+    "7 & 8 \\\\\n",
+    "9 & 10 \\\\\n",
+    "11 & 12\n",
+    "\\end{bmatrix}$ \n",
+    "\n",
+    "Recordemos de la materia de Álgebra Lineal que:\n",
+    "Sean A y B, 2 matrices\n",
+    "\n",
+    "$\\begin{bmatrix}\n",
+    "a_{11} & a_{12} & a_{13} \\\\\n",
+    "a_{21} & a_{22} & a_{23}\n",
+    "\\end{bmatrix}\n",
+    "\\begin{bmatrix}\n",
+    "b_{11} & b_{12} \\\\\n",
+    "b_{21} & b_{22} \\\\\n",
+    "b_{31} & b_{32}\n",
+    "\\end{bmatrix}\n",
+    "=\n",
+    "\\begin{bmatrix}\n",
+    "a_{11}b_{11} + a_{12}b_{21} + a_{13}b_{31} & a_{11}b_{12} + a_{12}b_{22} + a_{13}b_{32} \\\\\n",
+    "a_{21}b_{11} + a_{22}b_{21} + a_{23}b_{31} & a_{21}b_{12} + a_{22}b_{22} + a_{23}b_{32}\n",
+    "\\end{bmatrix}$\n",
+    "\n",
+    "---\n",
+    "\n",
+    "Antes de apreciar la **BELLEZA** de Numpy, hagamos una implementación de multiplicación de matrices sin utilizar numpy:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def multiplicar_matrices(A, B):\n",
+    "    # obtener dimensiones\n",
+    "    filas_A = len(A)\n",
+    "    cols_A = len(A[0])\n",
+    "    filas_B = len(B)\n",
+    "    cols_B = len(B[0])\n",
+    "\n",
+    "    # checar si se pueden multiplicar A y B\n",
+    "    if cols_A != filas_B:\n",
+    "        raise ValueError(\"El número de columnas de A debe ser igual al número de filas de B\")\n",
+    "\n",
+    "    # Inicializar una matriz vacía con ceros\n",
+    "    matriz_resultado = []\n",
+    "    for _ in range(filas_A):\n",
+    "        fila = []\n",
+    "        for _ in range(cols_B):\n",
+    "            fila.append(0)\n",
+    "        matriz_resultado.append(fila)\n",
+    "\n",
+    "    # realizar multiplicación\n",
+    "    for i in range(filas_A):\n",
+    "        for j in range(cols_B):\n",
+    "            for k in range(cols_A):\n",
+    "                matriz_resultado[i][j] += A[i][k] * B[k][j]\n",
+    "\n",
+    "    return matriz_resultado\n",
+    "\n",
+    "# Ejemplo\n",
+    "A = [\n",
+    "    [1, 2, 3],\n",
+    "    [4, 5, 6]\n",
+    "]\n",
+    "B = [\n",
+    "    [7, 8],\n",
+    "    [9, 10],\n",
+    "    [11, 12]\n",
+    "]\n",
+    "C = multiplicar_matrices(A, B)\n",
+    "print(C)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**¿Nada mal no?**\n",
+    "\n",
+    "Y de hecho se ejecutó bastante rápido… Pongámosle más estrés a Python con multiplicaciones de matrices más grandes, y contemos cuánto tarda en multiplicar cada una de ellas:\n",
+    "\n",
+    "### Función para crear una matriz de NxN con números aleatorios"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import random\n",
+    "\n",
+    "def generar_matriz_aleatoria(N):\n",
+    "    matriz = []\n",
+    "    for i in range(N):\n",
+    "        fila = []\n",
+    "        for j in range(N):\n",
+    "            fila.append(random.randint(1, 9))\n",
+    "        matriz.append(fila)\n",
+    "    return matriz\n",
+    "\n",
+    "\n",
+    "N = 5\n",
+    "matriz_aleatoria = generar_matriz_aleatoria(N)\n",
+    "for fila in matriz_aleatoria:\n",
+    "    print(fila)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Función para imprimir una matriz en formato amigable"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def imprimir_matriz(matriz):\n",
+    "    for fila in matriz:\n",
+    "        fila_formateada = ' '.join(f'{elemento:2}' for elemento in fila)\n",
+    "        print(fila_formateada)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Creación e impresión de las matrices"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"Matríz de 5x5:\")\n",
+    "m_5 = generar_matriz_aleatoria(5)\n",
+    "imprimir_matriz(m_5)\n",
+    "print(\"====================\")\n",
+    "print(\"Matríz de 10x10:\")\n",
+    "m_10 = generar_matriz_aleatoria(10)\n",
+    "imprimir_matriz(m_10)\n",
+    "print(\"====================\")\n",
+    "print(\"Matríz de 20x20:\")\n",
+    "m_20 = generar_matriz_aleatoria(20)\n",
+    "imprimir_matriz(m_20)\n",
+    "print(\"====================\")\n",
+    "m_100 = generar_matriz_aleatoria(100)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "Ahora midamos el tiempo que tardamos en multiplicar cada una de las matrices por sí misma. Utilizaremos código como éste\n",
+    "```python\n",
+    "start = time.time()\n",
+    "# ejecutar código\n",
+    "end = time.time()\n",
+    "tiempo = round(end - start, 5)\n",
+    "print(f\"La ejecución tardó {tiempo} seg.\")\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import time"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Comencemos con la matrices de 5x5**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "start = time.time()\n",
+    "multiplicar_matrices(m_5, m_5)\n",
+    "end = time.time()\n",
+    "tiempo = end - start\n",
+    "print(f\"Multiplicar dos matrices de 5x5 tardó {tiempo} seg.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Nada mal… Veamos ahora 10x10**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "start = time.time()\n",
+    "multiplicar_matrices(m_10, m_10)\n",
+    "end = time.time()\n",
+    "tiempo = end - start\n",
+    "print(f\"Multiplicar dos matrices de 10x10 tardó {tiempo} seg.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Parece que va bastante rápido... Intentemos ahora con una matriz de 1000x1000**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "m_1000 = generar_matriz_aleatoria(1000)\n",
+    "start = time.time()\n",
+    "multiplicar_matrices(m_1000, m_1000)\n",
+    "end = time.time()\n",
+    "tiempo = end - start\n",
+    "print(f\"Multiplicar dos matrices de 1000x1000 tardó {tiempo} seg.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Tardamos más de un minuto completo en multiplicar dos matrices de 1000x1000\n",
+    "\n",
+    "---\n",
+    "\n",
+    "## Implementación con Numpy\n",
+    "\n",
+    "Veamos qué tanto mejora el rendimiento de multiplicación de matrices cuando implementamos numpy. \n",
+    "\n",
+    "Primero, creemos una función para generar matrices:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def generar_matriz_aleatoria_numpy(N):\n",
+    "    return np.random.randint(1, 10, size=(N, N))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**No te preocupes por la sintaxis de Numpy. La revisaremos más adelante 😎**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "m_1000 = generar_matriz_aleatoria_numpy(1000)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Para multiplicar matrices en numpy, podemos utilizar la función `np.dot`, o bien, el operador `@`**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "start = time.time()\n",
+    "np.dot(m_1000, m_1000)\n",
+    "# o bien, m_1000 @ m_1000\n",
+    "end = time.time()\n",
+    "tiempo = end - start\n",
+    "print(f\"Multiplicar dos matrices de 1000x1000 con Numpy tardó {tiempo} seg.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "## Arreglos de 2 dimensiones\n",
+    "Un arreglo de dos dimensiones es lo mismo que una matriz de $m \\times n$. Una matriz es la forma más adecauda de representar datos tabulares, Numpy hace su manejo sumamente fácil. Comencemos por crear una matriz de $3 \\times 3$\n",
+    "\n",
+    "Queremos hacer la siguiente matriz:\n",
+    "$$ \\begin{bmatrix}\n",
+    "0 & 1 & 2 \\\\\n",
+    "3 & 4 & 5 \\\\\n",
+    "6 & 7 & 8\n",
+    "\\end{bmatrix} $$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list2 = [[0,1,2], [3,4,5], [6,7,8]]\n",
+    "arr2d = np.array(list2)\n",
+    "arr2d"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Podemos especificar el tipo de dato cuando creamos nuestro `ndarray`, por lo general Numpy infiere el tipo de dato"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2d_f = np.array(list2, dtype='float')\n",
+    "arr2d_f"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#convertir a enteros nuevamente\n",
+    "arr2d_f.astype('int')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# convertir a enteros y luego a strings\n",
+    "arr2d_f.astype('int').astype('str')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Una diferencia importante entre listas y np.arrays es que una lista puede almacenar objetos de diferentes tipos de datos, mientras que un np.array debe ser consistente en el tipo de dato que almacena. Esto se debe al deseo que tenemos por realizar operaciones vectorizadas"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# crear un arreglo de valroes lógicos o bools\n",
+    "arr2d_b = np.array([1, 0, 10, 11, 12, -1, 0], dtype='bool')\n",
+    "arr2d_b"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Sí existe una forma de mantener la ambigüedad en el tipo de dato de nuestro array. Esto lo podemos logar si especificamos que el tipo de dato es `object`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr1d_obj = np.array([1, 'a'], dtype='object')\n",
+    "arr1d_obj"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Por último: podemos convertir un `ndarray` a una lista en cualquier momento utilziando el método `tolist()`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "lista = arr1d_obj.tolist()\n",
+    "lista"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "O bien `list(numpy.ndarray)`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list(arr1d_obj)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true,
+    "slideshow": {
+     "slide_type": ""
+    },
+    "tags": []
+   },
+   "source": [
+    "## Tamaño y dimensión de un array\n",
+    "Un arreglo tiene dos propiedades básicas que nos dicen mucho acerca de su estructura: tamaño y dimensión.\n",
+    "\n",
+    "Considemos el arreglo `arr2d`. Éste se creó a partir de una lista de listas. O sea, tiene dos dimensiones. Un arreglo de dos dimensiones se puede mostrar como renglones y columnas, i.e. una matriz.\n",
+    "\n",
+    "Si hubiéramos creado el array a partir de una lista de lista de listas, entonces serían 3 dimensiones, i.e. un cubo. \n",
+    "\n",
+    "Supogamos que recibimos un arreglo de numpy que no creamos nosotros. ¿Qué cosas queremos explorar para conocer bien este arreglo?\n",
+    "\n",
+    "Bueno, unas buenas preguntas que querríamos contestar son:\n",
+    "- ¿Cuál es la dimensión del arreglo? ¿es de 1, 2 o más dimensiones? `ndim`\n",
+    "- ¿Cuántos elementos hay en cada dimensión? `shape`\n",
+    "- ¿Cuál es el tipo de dato? `dtype`\n",
+    "- ¿Cuál es el número total de elementos? `size`\n",
+    "- Algunos ejemplos/elementos del arreglo\n",
+    "\n",
+    "Comencemos"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Crear arreglo de dos dimensiones con 3 filas y 4 columnas\n",
+    "list2 = [[1, 2, 3, 4],[3, 4, 5, 6], [5, 6, 7, 8]]\n",
+    "arr2 = np.array(list2, dtype='float')\n",
+    "arr2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# shape\n",
+    "print('Shape: ', arr2.shape)\n",
+    "\n",
+    "# dtype\n",
+    "print('Datatype: ', arr2.dtype)\n",
+    "\n",
+    "# size\n",
+    "print('Size: ', arr2.size)\n",
+    "\n",
+    "# ndim\n",
+    "print('Num Dimensions: ', arr2.ndim)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "## Acceder a los elementos del arreglo\n",
+    "Podemos extraer elementos o porciones específicos de un arreglo utilizando índices o `indexing` empezando por $0$. Esto es similar a cómo lo hacemos con listas en Python.\n",
+    "\n",
+    "Pero a diferencia de las listas, los numpy arrays aceptan (opcionalmente) la misma cantidad de parámetros para indexar que el número de dimensiones que tiene el array.\n",
+    "\n",
+    "Esto último es algo confuso, y no hay mejor manera que ilustrarlo que con un ejemplo:\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Podemos extraer un elemento específico `(i, j)` en donde `i` es la fila y `j` la columna"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2[1, 1]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "También podemos extraer \"rangos\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Extraer las primeras 3 filas y las primeras 3 columnas\n",
+    "arr2[:3, :3]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Esto **no** se puede hacer en listas"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list2[:2, :2]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Adicionalmente, en los numpy arrays existe algo que se llama `boolean indexing` o indexación lógica. Un `boolean index` o índice lógico.\n",
+    "\n",
+    "Un array de índices lógicos es de exactamente la misma forma (`shape`) que el array que estamos filtrando, sólo que contiene únicamente valores booleanos (`True` o `False`). Los valores que estén en los índices Verdaderos son los que va a arrojar nuestro filtro."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Obtengamos el output booleano de aplicar una comparación a todo nuestro numpy array\n",
+    "b = arr2 > 4\n",
+    "b"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Como podemos ver, b ahora es una matriz de $3 \\times 4$ con puros valores booleanos. El valor `True` está en todas las  posiciones en las que se cumplió que el elemento era $ > 4$\n",
+    "\n",
+    "Con esta matriz de valores booleanos, podemos filtrar nuestra matriz original y obtener los valores que estén en posiciones verdaderas,"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2[b]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Valores faltantes e infinitos\n",
+    "Es muy común recibir conjuntos de datos que tengan uno que otro valor en NA. Con numpy podemos representar valores faltantes con `np.nan` e infinitos con `np.inf`. Agreguemos algunos de estos valores a `arr2`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2[1,1] = np.nan  # no es un número\n",
+    "arr2[1,2] = np.inf  # infinito\n",
+    "arr2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Vamos a reemplazar todos los valores `nan` e `inf` con un $-1$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "valores_faltantes_bool = np.isnan(arr2) | np.isinf(arr2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "valores_faltantes_bool"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2[valores_faltantes_bool] = -1\n",
+    "arr2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "## Calcular media, mínimo y máximo\n",
+    "\n",
+    "Un ndarray viene ya con algunos métodos útiles. Unos de éstos nos permiten calcular medidas básicas"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"Hola mundo\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"Media: \", arr2.mean())\n",
+    "print(\"Valor máximo: \", arr2.max())\n",
+    "print(\"Valor mínimo: \", arr2.min())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Sin embargo, estos valores exploraron toda la matriz. Podemos obtener los mismos valores pero para filas y columnas utilizando `np.amin`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"Valores mínimos en columnas\", np.amin(arr2, axis=0))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"Valores mínimos en filas: \", np.amin(arr2, axis=1))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "## Crear un arreglo a partir de otro arreglo\n",
+    "En Numpy la alocación de memoria sigue la misma lógica que en Python: si asignamos una porción de un array a una nueva variable, y modificamos elementos de esta nueva variable, entonces los cambios se verán reflejados también en nuestro array original. Para evitar este comportamiento (si eso es lo que queremos) utilizamos el método `copy()`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2_nuevo = arr2[:2,:2]  \n",
+    "arr2_nuevo[:1, :1] = 100  # el 100 se va a reflejar también en el array original arr2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Veamos arr2 (original)\n",
+    "arr2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Y ahora veamos `arr2_nuevo`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2_nuevo"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Para evitar esto vamos a usar copy\n",
+    "arr2_nuevo_2 = arr2[:2, :2].copy()\n",
+    "arr2_nuevo_2[0, 0] = 102  # 102 no saldrá en arr2\n",
+    "arr2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "arr2_nuevo_2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "## Crear secuencias, repeticiones y números aleatorios\n",
+    "\n",
+    "`np.arange`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# El límite inferior es 0 por defecto\n",
+    "print(np.arange(5))\n",
+    "nuevo_arr = np.arange(10)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "type(nuevo_arr)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 0 a 9\n",
+    "print(np.arange(5, 100))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 0 a 9 de 2 en 2\n",
+    "print(np.arange(0, 100, 3.5))  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 10 a 1, en decrementos de 1\n",
+    "print(np.arange(10, 0, -1))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Podemos poner límite inferior y superior con `np.arange`, pero si queremos enfocarnos en el número de elmentos que queremos generar, entonces tenemos que concentrarnos en el valor del incremento/decremento (`step`)\n",
+    "\n",
+    "Digamos que queremos generar exactamente 10 valores entre 1 y 50. \n",
+    "\n",
+    "Podemos usar `np.linspace`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Empieza en 1, terminar en 50, creando 10 números enteros\n",
+    "np.linspace(start=1, stop=50, num=20, dtype=int)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Un buen observador se dará cuenta que nuestros elementos no están espaciados uniformemente. Esto se debe a que especificamos que el tipo de dato era entero."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "## Crear arreglos de $1's$ y $0's$\n",
+    "\n",
+    "A menudo tendremos la necesidad de crear vectores o matrices que tengan únicamente valores de $1$ o $0$. Numpy hace esto muy fácil"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "np.zeros([2,2])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "np.ones([2,2])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "## Crear secuencias repetidas"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = [1,2,3] \n",
+    "\n",
+    "# Repetir todo el arreglo 'a' dos veces\n",
+    "print('Tile:   ', np.tile(a, 2))\n",
+    "\n",
+    "# Repetir cada elemento de 'a' dos veces\n",
+    "print('Repeat: ', np.repeat(a, 4))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import random\n",
+    "random.randint(0,100)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "## Generar números aleatorios\n",
+    "Numpy tiene un módulo `random` con funciones últiles para generar números aleatorios de cualquier `shape`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "print(\"Números aleatorios entre [0,1) de tamaño  2,2\")\n",
+    "print(np.random.rand(3,5))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"Números aleatorios de una distribución normal con media=0 y varianza=1 de tamaño 2,2\")\n",
+    "print(np.random.randn(2,2))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"Enteros aleatorios entre [0,10) de tamaño 2,2\")\n",
+    "print(np.random.randint(0, 100, size=[5,5]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"Genera un número aleatorio entre [0,1)\")\n",
+    "print(np.random.random())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"Elige 10 elementos de una lista (los resultados son equiprobables)\")\n",
+    "print(np.random.choice(['Cara', 'Sol'], size=10))  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"Elige 10 elementos de una lista. Cada uno con una probablidad p\")\n",
+    "print(np.random.choice(['Cara', 'Sol'], size=10, p=[0.2, .8]))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Cada que corramos el código anterior, obtendremos valores diferentes ya que estamos generando números aleatorios.\n",
+    "\n",
+    "Existen casos en los que queremos números pseudoaleatorios para poder reproducir nuestros resultados. Para esto utlizamos una semilla"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# ponemos una semilla 100 para reproducibilidad\n",
+    "np.random.seed(100)\n",
+    "print(np.random.rand(2,2))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "En todo script de python, si colocamos una semilla de 100 y ejecutamos `np.random.rand(2,2)` deberíamos obtener exactamente el mismo resultado. Esto es útil porque la reproducibilidad es indispensable en investigación. O sea, queremos que otras personas sean capaces de reproducir nuestros resultados."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "## Obtener valores únicos y frecuencias absolutas"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "np.random.seed(1)\n",
+    "arr_rand = np.random.randint(0, 10, size=100)\n",
+    "arr_rand"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "vals_unicos, frecuencias = np.unique(arr_rand, return_counts=True)\n",
+    "print(\"Elementos únicos: \", vals_unicos)\n",
+    "print(\"Frecuencias      :\", frecuencias)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "2**32"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
